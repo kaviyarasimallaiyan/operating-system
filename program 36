@@ -1,0 +1,77 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct block {
+  int block_num;
+  struct block *next;
+};
+
+struct file {
+  char name[20];
+  struct block *start;
+  struct block *end;
+};
+
+struct disk {
+  int size;
+  int used[100];
+  struct file files[100];
+  int num_files;
+};
+
+void allocate_block(struct disk *d, struct file *f) {
+  int i;
+  for (i = 0; i < d->size; i++) {
+    if (d->used[i] == 0) {
+      d->used[i] = 1;
+      struct block *b = (struct block *)malloc(sizeof(struct block));
+      b->block_num = i;
+      b->next = NULL;
+      if (f->start == NULL) {
+        f->start = b;
+        f->end = b;
+      } else {
+        f->end->next = b;
+        f->end = b;
+      }
+      break;
+    }
+  }
+}
+
+void create_file(struct disk *d, char *name) {
+  struct file *f = &d->files[d->num_files];
+  d->num_files++;
+  strcpy(f->name, name);
+  f->start = NULL;
+  f->end = NULL;
+  allocate_block(d, f);
+}
+
+void print_file(struct file *f) {
+  struct block *b = f->start;
+  while (b != NULL) {
+    printf("%d ", b->block_num);
+    b = b->next;
+  }
+  printf("\n");
+}
+
+int main() {
+  struct disk d;
+  d.size = 100;
+  d.num_files = 0;
+  int i;
+  for (i = 0; i < d.size; i++) {
+    d.used[i] = 0;
+  }
+  create_file(&d, "file1");
+  create_file(&d, "file2");
+  create_file(&d, "file3");
+  for (i = 0; i < d.num_files; i++) {
+    struct file *f = &d.files[i];
+    printf("File: %s\n", f->name);
+    print_file(f);
+  }
+  return 0;
+}
