@@ -1,0 +1,13 @@
+In Linux, file access permissions are used to control the level of access that different users have to a file.
+There are three types of permissions: read (r), write (w), and execute (x). 
+These permissions can be assigned to three different types of users: the owner of the file, the group that the owner belongs to, and others (everyone else).
+
+Owner: The owner of a file has the most control over the file and can set the permissions for the file. By default, the owner of a file is the user who created the file.
+
+Group: The group is a collection of users who share common permissions. By default, the group of a file is the group that the owner of the file belongs to.
+
+Others: This includes all other users who do not belong to the group or who are not the owner of the file.
+
+To view the file access permissions in Linux, you can use the "ls -l" command in the terminal.
+The permissions for each file are listed in the first column, with the letters "rwx" representing the read, write, and execute permissions for each user type.
+For example, "rwxr-xr-x" means that the owner has read, write, and execute permissions, the group has read and execute permissions, and others have read and execute permissions.
