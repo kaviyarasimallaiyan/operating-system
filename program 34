@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_FILES 10
+#define MAX_FILE_NAME_LENGTH 20
+#define MAX_FILE_SIZE 100
+
+struct File {
+    char name[MAX_FILE_NAME_LENGTH];
+    int size;
+    int start;
+};
+
+int main(void) {
+    struct File files[MAX_FILES];
+    int disk_size, num_files, disk_space_used = 0;
+    int i, j;
+
+    printf("Enter the disk size: ");
+    scanf("%d", &disk_size);
+
+    printf("Enter the number of files: ");
+    scanf("%d", &num_files);
+
+    for (i = 0; i < num_files; i++) {
+        printf("Enter the name of file %d: ", i + 1);
+        scanf("%s", files[i].name);
+
+        printf("Enter the size of file %d: ", i + 1);
+        scanf("%d", &files[i].size);
+
+        if (disk_space_used + files[i].size > disk_size) {
+            printf("Not enough space to store file %d\n", i + 1);
+            break;
+        } else {
+            files[i].start = disk_space_used;
+            disk_space_used += files[i].size;
+        }
+    }
+
+    printf("\nFile Allocation Table:\n");
+    printf("Name\tSize\tStart\n");
+    for (j = 0; j < i; j++) {
+        printf("%s\t%d\t%d\n", files[j].name, files[j].size, files[j].start);
+    }
+
+    return 0;
+}
