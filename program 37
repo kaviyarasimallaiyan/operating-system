@@ -1,0 +1,40 @@
+#include <stdio.h>
+
+#define MAX_REQUESTS 100
+
+void FCFS(int requests[], int num_requests, int head) {
+  int seek_time = 0;
+  int diff;
+  printf("\n");
+  printf("Movement of Disk Requests: \n");
+  printf("%d -> ", head);
+  for (int i = 0; i < num_requests; i++) {
+    diff = abs(requests[i] - head);
+    seek_time += diff;
+    printf("%d -> ", requests[i]);
+    head = requests[i];
+  }
+  printf("\n");
+  printf("Total Seek Time: %d\n", seek_time);
+  printf("Average Seek Time: %f\n", (float)seek_time / num_requests);
+}
+
+int main() {
+  int requests[MAX_REQUESTS];
+  int num_requests, head;
+  
+  printf("Enter the number of disk requests: ");
+  scanf("%d", &num_requests);
+  
+  printf("Enter the requests (in order they arrive): ");
+  for (int i = 0; i < num_requests; i++) {
+    scanf("%d", &requests[i]);
+  }
+  
+  printf("Enter the initial position of the disk head: ");
+  scanf("%d", &head);
+  
+  FCFS(requests, num_requests, head);
+  
+  return 0;
+}
