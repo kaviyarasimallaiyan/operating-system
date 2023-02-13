@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <stdbool.h>
+#define MAX_PAGE_REFERENCE_SIZE 100
+int main(void) {
+    int page_reference[MAX_PAGE_REFERENCE_SIZE];
+    int frame_size, page_reference_size;
+    int frames[MAX_PAGE_REFERENCE_SIZE];
+    int page_faults = 0;
+    int i, j;
+    bool is_page_hit;
+    printf("Enter the number of frames: ");
+    scanf("%d", &frame_size);
+    printf("Enter the number of page references: ");
+    scanf("%d", &page_reference_size);
+    printf("Enter the page references: ");
+    for (i = 0; i < page_reference_size; i++) {
+        scanf("%d", &page_reference[i]);
+    }
+    for (i = 0; i < frame_size; i++) {
+        frames[i] = -1;
+    }
+    for (i = 0; i < page_reference_size; i++) {
+        is_page_hit = false;
+        for (j = 0; j < frame_size; j++) {
+            if (frames[j] == page_reference[i]) {
+                is_page_hit = true;
+                break;
+            }
+        }
+        if (!is_page_hit) {
+            frames[page_faults % frame_size] = page_reference[i];
+            page_faults++;
+        }
+        printf("Page reference: %d\n", page_reference[i]);
+        printf("Frames: ");
+        for (j = 0; j < frame_size; j++) {
+            printf("%d ", frames[j]);
+        }
+        printf("\n");
+    }
+    printf("Total page faults: %d\n", page_faults);
+    return 0;
+}
