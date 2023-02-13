@@ -1,0 +1,36 @@
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#define NUM_THREADS 5
+void *thread_function(void *thread_id) {
+    long tid = (long)thread_id;
+    printf("Hello from thread %ld\n", tid);
+    pthread_exit(NULL);
+}
+int main(int argc, char *argv[]) {
+    pthread_t threads[NUM_THREADS];
+    int rc;
+    long t;
+    for (t = 0; t < NUM_THREADS; t++) {
+        rc = pthread_create(&threads[t], NULL, thread_function, (void *)t);
+        if (rc) {
+            printf("Error: pthread_create() returned %d\n", rc);
+            exit(-1);
+        }
+    }
+    for (t = 0; t < NUM_THREADS; t++) {
+        rc = pthread_join(threads[t], NULL);
+        if (rc) {
+            printf("Error: pthread_join() returned %d\n", rc);
+            exit(-1);
+        }
+    }
+    pthread_t current_thread = pthread_self();
+    for (t = 0; t < NUM_THREADS; t++) {
+        if (pthread_equal(current_thread, threads[t])) {
+            printf("Current thread is %ld\n", t);
+        }
+    }
+    pthread_exit(NULL);
+    return 0;
+}
